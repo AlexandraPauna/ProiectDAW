@@ -76,9 +76,30 @@ namespace DAWProiect.Models
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "Confirmare parola")]
+        [Compare("Password", ErrorMessage = "Parola nu corespunde.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "Prenume")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "Nume")]
+        public string LastName { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "Nume Utilizator")]
+        public string UserName { get; set; }
+
+        [Required]
+        [DataType(DataType.PhoneNumber)]
+        [Display(Name = "Numar Telefon")]
+        public string PhoneNumber { get; set; }
+
     }
 
     public class ResetPasswordViewModel
@@ -95,10 +116,11 @@ namespace DAWProiect.Models
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "Confirmare parola")]
+        [Compare("Password", ErrorMessage = "Parola nu corespunde.")]
         public string ConfirmPassword { get; set; }
 
+       
         public string Code { get; set; }
     }
 

@@ -16,6 +16,9 @@ namespace DAWProiect.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -24,6 +27,8 @@ namespace DAWProiect.Models
             : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
+
+        public DbSet<Category> Categories { get; set; }
 
         public static ApplicationDbContext Create()
         {
