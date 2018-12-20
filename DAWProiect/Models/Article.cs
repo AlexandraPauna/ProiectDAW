@@ -7,5 +7,6 @@ namespace DAWProiect.Models
 {
     public class Article
     {
+        public int Id;
     }
 }
