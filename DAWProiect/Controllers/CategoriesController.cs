@@ -33,13 +33,14 @@ namespace DAWProiect.Controllers
 
             return View(category);
         }
-
+        [Authorize(Roles = "Editor,Administrator")]
         public ActionResult New()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "Editor,Administrator")]
         public ActionResult New(Category category)
         {
             try
@@ -55,6 +56,7 @@ namespace DAWProiect.Controllers
             }
         }
 
+        [Authorize(Roles = "Editor,Administrator")]
         public ActionResult Edit(int id)
         {
             Category category = db.Categories.Find(id);
@@ -63,6 +65,7 @@ namespace DAWProiect.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Editor,Administrator")]
         public ActionResult Edit(int id, Category requestCategory)
         {
             try
@@ -91,6 +94,7 @@ namespace DAWProiect.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Editor,Administrator")]
         public ActionResult Delete(int id)
         {
             Category category = db.Categories.Find(id);
@@ -99,6 +103,5 @@ namespace DAWProiect.Controllers
             TempData["message"] = "Categoria a fost stearsa!";
             return RedirectToAction("Index");
         }
-
     }
 }

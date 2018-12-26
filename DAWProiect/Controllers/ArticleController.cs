@@ -1,4 +1,6 @@
 ﻿using DAWProiect.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,6 +13,7 @@ namespace DAWProiect.Controllers
     public class ArticleController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationUserManager _userManager;
 
         public ActionResult Index()
         {
@@ -38,6 +41,7 @@ namespace DAWProiect.Controllers
 
         }
 
+        [Authorize(Roles = "Editor,Administrator")]
         public ActionResult New()
         {
             Article article = new Article();
@@ -67,8 +71,8 @@ namespace DAWProiect.Controllers
             return selectList;
         }
 
-
         [HttpPost]
+        [Authorize(Roles = "Editor,Administrator")]
         public ActionResult New([Bind(Exclude = "ArticlePhoto")]Article article)
         {
             article.Categories = GetAllCategories();
@@ -85,6 +89,15 @@ namespace DAWProiect.Controllers
                     }
                 }
                 article.ArticlePhoto = imageData;
+
+                _userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+
+                var userId = User.Identity.GetUserId();
+                if (userId == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+                else article.UserId = userId;
 
                 if (ModelState.IsValid)
                 {
@@ -107,7 +120,7 @@ namespace DAWProiect.Controllers
             }
         }
 
-
+        [Authorize(Roles = "Editor,Administrator")]
         public ActionResult Edit(int id)
         {
 
@@ -116,9 +129,9 @@ namespace DAWProiect.Controllers
             article.Categories = GetAllCategories();
             return View(article);
         }
-
-
+        
         [HttpPut]
+        [Authorize(Roles = "Editor,Administrator")]
         public ActionResult Edit(int id, Article requestArticle)
         {
             try
@@ -150,6 +163,7 @@ namespace DAWProiect.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Editor,Administrator")]
         public ActionResult Delete(int id)
         {
 
