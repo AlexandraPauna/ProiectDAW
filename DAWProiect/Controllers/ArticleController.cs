@@ -1,6 +1,7 @@
 ﻿using DAWProiect.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -68,13 +69,28 @@ namespace DAWProiect.Controllers
 
 
         [HttpPost]
-        public ActionResult New(Article article)
+        public ActionResult New([Bind(Exclude = "ArticlePhoto")]Article article)
         {
             article.Categories = GetAllCategories();
             try
             {
+                byte[] imageData = null;
+                if (Request.Files.Count > 0)
+                {
+                    HttpPostedFileBase poImgFile = Request.Files["ArticlePhoto"];
+
+                    using (var binary = new BinaryReader(poImgFile.InputStream))
+                    {
+                        imageData = binary.ReadBytes(poImgFile.ContentLength);
+                    }
+                }
+                article.ArticlePhoto = imageData;
+
                 if (ModelState.IsValid)
                 {
+                   
+                   
+
                     db.Articles.Add(article);
                     db.SaveChanges();
                     TempData["message"] = "Articolul a fost adaugat!";
@@ -144,8 +160,31 @@ namespace DAWProiect.Controllers
             return RedirectToAction("Index");
         }
 
-  
+        public FileContentResult DisplayArticlePhoto(int artId)
+        {
+            
+           var  articleImage = from artImage in db.Articles
+                               where artImage.Id.Equals(artId)
+                               select artImage.ArticlePhoto;
+           
+           if (articleImage.FirstOrDefault() == null)
+           {
+                string fileName = HttpContext.Server.MapPath(@"~/Images/noImg.png");
+
+                byte[] imageData = null;
+                FileInfo fileInfo = new FileInfo(fileName);
+                long imageFileLength = fileInfo.Length;
+                FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+                BinaryReader br = new BinaryReader(fs);
+                imageData = br.ReadBytes((int)imageFileLength);
+
+                return File(imageData, "image/png");
+           }
+
+            return new FileContentResult(articleImage.FirstOrDefault(), "image/jpeg");
+
+        }
+
     }
 
-}
 }

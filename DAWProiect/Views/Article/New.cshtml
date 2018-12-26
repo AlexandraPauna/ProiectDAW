@@ -1,0 +1,33 @@
+﻿@model DAWProiect.Models.Article
+@{
+    ViewBag.Titlu = "Creare articol";
+}
+
+<h2>@ViewBag.Titlu</h2>
+<form method="post" action="/Article/New">
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    @Html.Label("Title", "Titlu Stire")
+    <br />
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ArticlePhoto, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            <input type="file" name="ArticlePhoto" id="fileUpload" accept=".png,.jpg,.jpeg,.gif,.tif" />
+        </div>
+    </div>
+    </br>
+
+     @Html.TextBox("Title", null, new { @class = "form-control" })
+     @Html.ValidationMessageFor(model => model.Title, "Titlul este obligatoriu", new { @class = "text-danger " })
+     <br /><br />
+     @Html.Label("Content", "Continut Stire")
+     <br />
+     @Html.TextArea("Content", null, new { @class = "form-control" })
+     @Html.ValidationMessageFor(model => model.Content, "Continutul este obligatoriu", new { @class = "text-danger " })
+     <br /><br />
+      @Html.Hidden("Date", DateTime.Now, new { @class = "form-control" })
+      <label>Selectati categoria</label>
+      @Html.DropDownListFor(m => m.CategoryId, new SelectList(Model.Categories, "Value", "Text"), "Selectati categoria", new { @class = "form-control" })
+      <br />
+      <button class="btn btn-sm btn-success" type="submit">Adauga articol</button>
+</form>

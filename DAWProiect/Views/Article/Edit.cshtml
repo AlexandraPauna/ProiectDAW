@@ -1,0 +1,31 @@
+﻿@model DAWProiect.Models.Article
+
+@{
+    ViewBag.Titlu = "Editare Articol";
+}
+
+<h2>@ViewBag.Titlu</h2>
+
+<form method="post" action="/Article/Edit/@Model.Id">
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    @Html.HiddenFor(m => m.Id)
+    <br />
+    @Html.Label("Title", "Titlu Articol")
+    <br />
+    @Html.EditorFor(m => m.Title)
+    @Html.ValidationMessageFor(model => model.Title, "Titlul este obligatoriu", new { @class = "text-danger " })
+    <br /><br />
+    @Html.Label("Content", "Continut Articol")
+    <br />
+    @Html.EditorFor(m => m.Content)
+    @Html.ValidationMessageFor(model => model.Content, "Continutul este obligatoriu", new { @class = "text-danger " })
+    <br /><br />
+    @Html.HiddenFor(m => m.Date)
+    <br />
+    <label>Selectati categoria</label>
+    @Html.DropDownListFor(m => m.CategoryId, new SelectList(Model.Categories, "Value", "Text"), "Selectati categoria", new { @class = "form-control" })
+    <br />
+    <button class="btn btn-sm btn-success" type="submit">Modifica articol</button>
+</form>
+

@@ -27,7 +27,7 @@ namespace DAWProiect.Models
         public DateTime Date { get; set; }
 
         [Display(Name = "Poza Stire")]
-        public byte[] UserPhoto { get; set; }
+        public byte[] ArticlePhoto { get; set; }
 
         public string UserId { get; set; }
 

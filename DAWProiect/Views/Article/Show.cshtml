@@ -1,0 +1,26 @@
+﻿@model DAWProiect.Models.Article
+
+@{
+    ViewBag.Titlu = "Afisare articol";
+}
+
+<h2>@ViewBag.Titlu</h2>
+
+<br />
+
+@Html.Partial("ArticleShowPartial")
+
+<a class="btn btn-sm btn-info" href="/Article/Edit/@Model.Id">
+    Modifica articol
+</a>
+<br />
+<form method="post" action="/Article/Delete/@Model.Id">
+    @Html.HttpMethodOverride(HttpVerbs.Delete)
+    <button class="btn btn-sm btn-danger" type="submit">Sterge articol</button>
+</form>
+
+<hr />
+<a class="btn btn-sm btn-success" href="/Article/Index">Inapoi la articole</a> <a class="btn btn-sm btn-success" href="/Article/New">Adauga articol</a>
+
+<br />
+
