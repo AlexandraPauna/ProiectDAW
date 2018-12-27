@@ -163,11 +163,12 @@ namespace DAWProiect.Controllers
         public FileContentResult DisplayArticlePhoto(int artId)
         {
             
-           var  articleImage = from artImage in db.Articles
-                               where artImage.Id.Equals(artId)
-                               select artImage.ArticlePhoto;
+           var article = from art in db.Articles
+                               where art.Id.Equals(artId)
+                               select art;
+            var artImage = article.FirstOrDefault().ArticlePhoto;
            
-           if (articleImage.FirstOrDefault() == null)
+           if (artImage.Length <= 0)
            {
                 string fileName = HttpContext.Server.MapPath(@"~/Images/noImg.png");
 
@@ -179,9 +180,9 @@ namespace DAWProiect.Controllers
                 imageData = br.ReadBytes((int)imageFileLength);
 
                 return File(imageData, "image/png");
-           }
+            }
 
-            return new FileContentResult(articleImage.FirstOrDefault(), "image/jpeg");
+            return new FileContentResult(artImage, "image/jpeg");
 
         }
 

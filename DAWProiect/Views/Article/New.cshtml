@@ -4,7 +4,7 @@
 }
 
 <h2>@ViewBag.Titlu</h2>
-<form method="post" action="/Article/New">
+<form method="post" action="/Article/New" enctype="multipart/form-data">
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
     @Html.Label("Title", "Titlu Stire")
     <br />
