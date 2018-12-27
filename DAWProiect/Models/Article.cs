@@ -12,12 +12,12 @@ namespace DAWProiect.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Introduceti titlul!")]
         [Display(Name = "Titlu Stire")]
         [StringLength(70, ErrorMessage = "Titlul este prea lung")]
         public string Title { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Introduceti continutul stirii!")]
         [Display(Name = "Continut Stire")]
         [MinLength(10, ErrorMessage = "Stirea este prea scurta! Va rugam adaugati detalii!")]
         public string Content { get; set; }
@@ -33,7 +33,7 @@ namespace DAWProiect.Models
 
         public virtual ApplicationUser User { get; set; }
 
-        [Required(ErrorMessage = "Va rugam selectati categoria!")]
+        [Required(ErrorMessage = "Selectati categoria!")]
         [Display(Name = "Categorie")]
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; }
