@@ -1,7 +1,7 @@
 ﻿<div class="panel panel-default">
     <div class="panel-heading">@Model.Title</div>
     <div class="panel-body">
-        <img src="@Url.Action("DisplayArticlePhoto", "Article", new { artId = Model.Id})" height="42" width="42" />
+        @*<img src="@Url.Action("DisplayArticlePhoto", "Article", new { artId = Model.Id})" height="42" width="42" />*@
         Continut articol: <strong>@Model.Content</strong>
         <br />
         <span class="label label-success">@Model.Date</span>
