@@ -1,31 +1,54 @@
 ﻿@model DAWProiect.Models.Article
 
 @{
-    ViewBag.Titlu = "Editare Articol";
+    ViewBag.Titlu = "Editeaza Stirea";
 }
 
 <h2>@ViewBag.Titlu</h2>
 
-<form method="post" action="/Article/Edit/@Model.Id">
+<form method="post" action="/Article/Edit/@Model.Id" enctype = "multipart/form-data" >
     @Html.HttpMethodOverride(HttpVerbs.Put)
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
     @Html.HiddenFor(m => m.Id)
     <br />
-    @Html.Label("Title", "Titlu Articol")
-    <br />
-    @Html.EditorFor(m => m.Title)
-    @Html.ValidationMessageFor(model => model.Title, "Titlul este obligatoriu", new { @class = "text-danger " })
+
+    <div class="form-group">
+        @Html.Label("Title", "Titlul Stirii", new { @class = "col-md-2 control-label" })
+        <br />
+        <div class="col-md-10">
+            @Html.EditorFor(m => m.Title)
+            @Html.ValidationMessageFor(model => model.Title, "Titlul este obligatoriu", new { @class = "text-danger " })
+        </div>
+    </div>
     <br /><br />
-    @Html.Label("Content", "Continut Articol")
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ArticlePhoto, new { @class = "col-md-2 control-label" })
+        <br />
+        <div class="col-md-10">
+            <input type="file" name="ArticlePhoto" title="Incarca alta poza" value="@Model.ArticlePhoto" id="fileUpload" accept=".png,.jpg,.jpeg,.gif,.tif" />
+        </div>
+    </div>
     <br />
-    @Html.EditorFor(m => m.Content)
-    @Html.ValidationMessageFor(model => model.Content, "Continutul este obligatoriu", new { @class = "text-danger " })
+
+    <div class="form-group">
+        @Html.Label("Content", "Continut Articol",  new { @class = "col-md-2 control-label" })
+        <br />
+        @Html.EditorFor(m => m.Content)
+        @Html.ValidationMessageFor(model => model.Content, "Continutul este obligatoriu", new { @class = "text-danger " })
+    </div>
     <br /><br />
+
     @Html.HiddenFor(m => m.Date)
     <br />
-    <label>Selectati categoria</label>
-    @Html.DropDownListFor(m => m.CategoryId, new SelectList(Model.Categories, "Value", "Text"), "Selectati categoria", new { @class = "form-control" })
+    <div class="form-group">
+        @Html.Label("CategoryId", "Selectati categoria", new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.CategoryId, new SelectList(Model.Categories, "Value", "Text"), "Selectati categoria", new { @class = "form-control" })
+        </div>
+    </div>
     <br />
-    <button class="btn btn-sm btn-success" type="submit">Modifica articol</button>
+
+    <button class="btn btn-sm btn-success" type="submit">Modifica stire</button>
 </form>
 

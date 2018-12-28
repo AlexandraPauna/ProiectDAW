@@ -1,12 +1,30 @@
 ﻿<div class="panel panel-default">
-    <div class="panel-heading">@Model.Title</div>
-    <div class="panel-body">
-        Continut articol: <strong>@Model.Content</strong>
-        <br />
-        <span class="label label-success">@Model.Date</span>
-        <br />
-        <i class="glyphicon glyphicon-globe"></i> @Model.Category.CategoryName
+    <div class="panel-heading">
+        <div class="text-center">@Model.Title</div>
     </div>
+
+    <div class="panel-body">
+
+        <img class="img-responsive" src="@Url.Action("DisplayArticlePhoto", "Article", new { artId = Model.Id})" />
+        <br />
+
+        <span class="label label-success">@Model.Date</span>
+        @*<br />*@
+        <span class="pull-right">
+            <i class="glyphicon glyphicon-globe"></i> @Model.Category.CategoryName
+        </span>
+        <br />
+        <br />
+
+        <p class="text-left">@Model.Content</p>
+        <br />
+    </div>
+
+    <div class="panel-footer">
+        <i class="glyphicon glyphicon-user"></i> <i>stire scrisa de</i>
+        <strong>@Model.User.UserName</strong>
+    </div>
+
 </div>
 <br />
 

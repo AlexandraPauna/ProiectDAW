@@ -20,7 +20,7 @@ namespace DAWProiect.Controllers
             // var articles = from article in db.Articles
             //               select article;
             // Solutia: Eager loading
-            var articles = db.Articles.Include("Category");
+            var articles = db.Articles.Include("Category").Include("User");
             if (TempData.ContainsKey("message"))
             {
                 ViewBag.message = TempData["message"].ToString();
@@ -127,18 +127,38 @@ namespace DAWProiect.Controllers
             Article article = db.Articles.Find(id);
             ViewBag.Article = article;
             article.Categories = GetAllCategories();
+
             return View(article);
         }
-        
+
         [HttpPut]
         [Authorize(Roles = "Editor,Administrator")]
-        public ActionResult Edit(int id, Article requestArticle)
+        public ActionResult Edit([Bind(Exclude = "ArticlePhoto")]int id, Article requestArticle)
         {
+            Article article = db.Articles.Find(id);
+            byte[] imageData = null;
+            if (Request.Files.Count > 0)
+            {
+                HttpPostedFileBase poImgFile = Request.Files["ArticlePhoto"];
+
+                using (var binary = new BinaryReader(poImgFile.InputStream))
+                {
+                    imageData = binary.ReadBytes(poImgFile.ContentLength);
+                }
+
+                //UserPhoto is not updated if no file is chosen
+                if (imageData.Length > 0)
+                {
+                    article.ArticlePhoto = imageData;
+                }
+
+            }
             try
             {
+               
                 if (ModelState.IsValid)
                 {
-                    Article article = db.Articles.Find(id);
+
                     if (TryUpdateModel(article))
                     {
                         article.Title = requestArticle.Title;
@@ -182,7 +202,7 @@ namespace DAWProiect.Controllers
                                select art;
             var artImage = article.FirstOrDefault().ArticlePhoto;
            
-           if (artImage.Length <= 0)
+           if (artImage == null ||artImage.Length <= 0)
            {
                 string fileName = HttpContext.Server.MapPath(@"~/Images/noImg.png");
 

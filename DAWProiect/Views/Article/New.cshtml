@@ -6,6 +6,9 @@
 <h2>@ViewBag.Titlu</h2>
 <form method="post" action="/Article/New" enctype="multipart/form-data">
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+    @Html.HiddenFor(m => m.UserId)
+
     @Html.Label("Title", "Titlu Stire")
     <br />
 
@@ -17,17 +20,17 @@
     </div>
     </br>
 
-     @Html.TextBox("Title", null, new { @class = "form-control" })
-     @Html.ValidationMessageFor(model => model.Title, "Titlul este obligatoriu", new { @class = "text-danger " })
-     <br /><br />
-     @Html.Label("Content", "Continut Stire")
-     <br />
-     @Html.TextArea("Content", null, new { @class = "form-control" })
-     @Html.ValidationMessageFor(model => model.Content, "Continutul este obligatoriu", new { @class = "text-danger " })
-     <br /><br />
-      @Html.Hidden("Date", DateTime.Now, new { @class = "form-control" })
-      <label>Selectati categoria</label>
-      @Html.DropDownListFor(m => m.CategoryId, new SelectList(Model.Categories, "Value", "Text"), "Selectati categoria", new { @class = "form-control" })
-      <br />
-      <button class="btn btn-sm btn-success" type="submit">Adauga articol</button>
+    @Html.TextBox("Title", null, new { @class = "form-control" })
+    @Html.ValidationMessageFor(model => model.Title, "Titlul este obligatoriu", new { @class = "text-danger " })
+    <br /><br />
+    @Html.Label("Content", "Continut Stire")
+    <br />
+    @Html.TextArea("Content", null, new { @class = "form-control" })
+    @Html.ValidationMessageFor(model => model.Content, "Continutul este obligatoriu", new { @class = "text-danger " })
+    <br /><br />
+    @Html.Hidden("Date", DateTime.Now, new { @class = "form-control" })
+    <label>Selectati categoria</label>
+    @Html.DropDownListFor(m => m.CategoryId, new SelectList(Model.Categories, "Value", "Text"), "Selectati categoria", new { @class = "form-control" })
+    <br />
+    <button class="btn btn-sm btn-success" type="submit">Adauga articol</button>
 </form>
