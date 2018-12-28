@@ -1,4 +1,6 @@
-﻿@model DAWProiect.Models.Category
+﻿@*@model DAWProiect.Models.Category*@
+@model DAWProiect.Models.Article
+@using Microsoft.AspNet.Identity
 
 
 @{
@@ -6,18 +8,35 @@
 }
 
 <h2>@ViewBag.Title</h2>
-<h1>@Model.CategoryName</h1>
+@*<h1>@Model.CategoryName</h1>*@
+<h1>@ViewBag.Category.CategoryName</h1>
 <br />
 
-<a class="btn btn-sm btn-info" href="/Categories/Edit/@Model.CategoryId">Modifica categoria</a>
-<br /><br />
-<form method="post" action="/Categories/Delete/@Model.CategoryId">
-    @Html.HttpMethodOverride(HttpVerbs.Delete)
-    <button class="btn btn-sm btn-danger" type="submit">Sterge categoria</button>
-</form>
+@*<a class="btn btn-sm btn-info" href="/Categories/Edit/@Model.CategoryId">Modifica categoria</a>
+    <br /><br />
+    <form method="post" action="/Categories/Delete/@Model.CategoryId">
+        @Html.HttpMethodOverride(HttpVerbs.Delete)
+        <button class="btn btn-sm btn-danger" type="submit">Sterge categoria</button>
+    </form>*@
+
+@if (Roles.GetRolesForUser().Contains("Administrator"))
+{
+    <a class="btn btn-sm btn-info" href="/Categories/Edit/@ViewBag.CategoryId">Modifica categoria</a>
+    <br /><br />
+    <form method="post" action="/Categories/Delete/@ViewBag.CategoryId">
+        @Html.HttpMethodOverride(HttpVerbs.Delete)
+        <button class="btn btn-sm btn-danger" type="submit">Sterge categoria</button>
+    </form>
+}
+
+@foreach (DAWProiect.Models.Article article in ViewBag.Articles)
+{
+    @Html.Partial("ArticleInfo", article);
+
+}
 
 <hr />
-<a class="btn btn-sm btn-success" href="/Article/Index">Inapoi la articole</a>
+<a class="btn btn-sm btn-success" href="/Article/Index">Inapoi la toate stirile</a>
 <br /><br />
 <a class="btn btn-sm btn-success" href="/Categories/Index">Inapoi la categorii</a>
 <br />

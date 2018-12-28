@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DAWProiect.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,8 +9,17 @@ namespace DAWProiect.Controllers
 {
     public class HomeController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         public ActionResult Index()
         {
+            var articles = db.Articles.Include("Category").Include("User").OrderByDescending(a => a.Date);
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.message = TempData["message"].ToString();
+            }
+            ViewBag.Articles = articles;
+            
             return View();
         }
 

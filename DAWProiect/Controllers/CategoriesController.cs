@@ -1,9 +1,11 @@
 ﻿using DAWProiect.Models;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace DAWProiect.Controllers
 {
@@ -30,9 +32,22 @@ namespace DAWProiect.Controllers
         {
             Category category = db.Categories.Find(id);
             ViewBag.Category = category;
+            
+            //var userId = User.Identity.GetUserId();
+            //var role = Roles.GetRolesForUser().FirstOrDefault();
+            //ViewBag.UserRole = role;
 
-            return View(category);
+            var articles = db.Articles.Include("Category").Include("User").Where(a => a.CategoryId == id);
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.message = TempData["message"].ToString();
+            }
+            ViewBag.Articles = articles;
+            //return View(category);
+            //return View(articles);
+            return View();
         }
+
         [Authorize(Roles = "Editor,Administrator")]
         public ActionResult New()
         {
