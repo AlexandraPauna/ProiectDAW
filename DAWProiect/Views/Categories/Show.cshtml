@@ -19,7 +19,8 @@
         <button class="btn btn-sm btn-danger" type="submit">Sterge categoria</button>
     </form>*@
 
-@if (Roles.GetRolesForUser().Contains("Administrator"))
+@*@if (Roles.GetRolesForUser().Contains("Administrator"))*@
+@if (ViewBag.Allow == true)
 {
     <a class="btn btn-sm btn-info" href="/Categories/Edit/@ViewBag.CategoryId">Modifica categoria</a>
     <br /><br />

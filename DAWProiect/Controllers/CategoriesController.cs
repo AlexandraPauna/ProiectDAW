@@ -1,5 +1,6 @@
 ﻿using DAWProiect.Models;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,11 +33,10 @@ namespace DAWProiect.Controllers
         {
             Category category = db.Categories.Find(id);
             ViewBag.Category = category;
-            
-            //var userId = User.Identity.GetUserId();
-            //var role = Roles.GetRolesForUser().FirstOrDefault();
-            //ViewBag.UserRole = role;
+            var userId = User.Identity.GetUserId();
 
+            ViewBag.Allow = db.Roles.Any(x => x.Users.Any(y => y.UserId == userId) && x.Name == "Administrator");
+            
             var articles = db.Articles.Include("Category").Include("User").Where(a => a.CategoryId == id);
             if (TempData.ContainsKey("message"))
             {

@@ -133,7 +133,7 @@ namespace DAWProiect.Controllers
 
         [HttpPut]
         [Authorize(Roles = "Editor,Administrator")]
-        public ActionResult Edit([Bind(Exclude = "ArticlePhoto")]int id, Article requestArticle)
+        public ActionResult Edit(int id, [Bind(Exclude = "ArticlePhoto")]Article requestArticle)
         {
             Article article = db.Articles.Find(id);
             byte[] imageData = null;
@@ -156,24 +156,24 @@ namespace DAWProiect.Controllers
             try
             {
                
-                if (ModelState.IsValid)
-                {
+                //if (ModelState.IsValid)
+                //{
 
-                    if (TryUpdateModel(article))
-                    {
+                    //if (TryUpdateModel(article))
+                    //{
                         article.Title = requestArticle.Title;
                         article.Content = requestArticle.Content;
                         article.Date = requestArticle.Date;
                         article.CategoryId = requestArticle.CategoryId;
                         db.SaveChanges();
                         TempData["message"] = "Articolul a fost modificat!";
-                    }
+                    //}
                     return RedirectToAction("Index");
-                }
-                else
-                {
-                    return View();
-                }
+                //}
+                //else
+                //{
+                //    return View();
+                //}
 
             }
             catch (Exception e)
