@@ -29,6 +29,7 @@ namespace DAWProiect.Controllers
             return View();
         }
 
+
         public ActionResult Show(int id)
         {
             Category category = db.Categories.Find(id);
@@ -40,6 +41,37 @@ namespace DAWProiect.Controllers
             ViewBag.Allow = db.Roles.Any(x => x.Users.Any(y => y.UserId == userId) && x.Name == "Administrator");
             
             var articles = db.Articles.Include("Category").Include("User").Where(a => a.CategoryId == id);
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.message = TempData["message"].ToString();
+            }
+            ViewBag.Articles = articles;
+            //return View(category);
+            //return View(articles);
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Show(int id, string sortType)
+        {
+            Category category = db.Categories.Find(id);
+            //ViewBag.Category = category;
+            ViewBag.CategoryId = category.CategoryId;
+            ViewBag.CategoryName = category.CategoryName;
+            var userId = User.Identity.GetUserId();
+
+            ViewBag.Allow = db.Roles.Any(x => x.Users.Any(y => y.UserId == userId) && x.Name == "Administrator");
+            var articles = db.Articles.Include("Category").Include("User").Where(a => a.CategoryId == id);
+            
+            if (sortType == "Title")
+                articles = db.Articles.Include("Category").Include("User").Where(a => a.CategoryId == id).OrderBy(x => x.Title);
+            //articles.OrderBy(x => x.Title);
+            else 
+            if(sortType == "Date")
+                //articles.OrderByDescending(x => x.Date);
+                articles = db.Articles.Include("Category").Include("User").Where(a => a.CategoryId == id).OrderByDescending(x => x.Date);
+
+
             if (TempData.ContainsKey("message"))
             {
                 ViewBag.message = TempData["message"].ToString();
