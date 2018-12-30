@@ -13,6 +13,7 @@ namespace DAWProiect.Controllers
     {
         private ApplicationDbContext db = ApplicationDbContext.Create();
         // GET: Users
+        [Authorize(Roles = "Administrator")]
         public ActionResult Index()
         {
             var users = from user in db.Users
@@ -21,7 +22,7 @@ namespace DAWProiect.Controllers
             ViewBag.UsersList = users;
             return View();
         }
-
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit(string id)
         {
             ApplicationUser user = db.Users.Find(id);
@@ -47,6 +48,7 @@ namespace DAWProiect.Controllers
             return selectList;
         }
         [HttpPut]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit(string id, ApplicationUser newData)
         {
             ApplicationUser user = db.Users.Find(id);

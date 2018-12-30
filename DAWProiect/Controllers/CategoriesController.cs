@@ -32,7 +32,9 @@ namespace DAWProiect.Controllers
         public ActionResult Show(int id)
         {
             Category category = db.Categories.Find(id);
-            ViewBag.Category = category;
+            //ViewBag.Category = category;
+            ViewBag.CategoryId = category.CategoryId;
+            ViewBag.CategoryName = category.CategoryName;
             var userId = User.Identity.GetUserId();
 
             ViewBag.Allow = db.Roles.Any(x => x.Users.Any(y => y.UserId == userId) && x.Name == "Administrator");
@@ -117,6 +119,12 @@ namespace DAWProiect.Controllers
             db.SaveChanges();
             TempData["message"] = "Categoria a fost stearsa!";
             return RedirectToAction("Index");
+        }
+
+        public void sortRecent(int id)
+        {
+            var articles = db.Articles.Include("Category").Include("User").Where(a => a.CategoryId == id).OrderByDescending(a => a.Date);
+            ViewBag.Articles = articles;
         }
     }
 }

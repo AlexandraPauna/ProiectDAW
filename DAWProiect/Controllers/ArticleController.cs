@@ -17,9 +17,6 @@ namespace DAWProiect.Controllers
 
         public ActionResult Index()
         {
-            // var articles = from article in db.Articles
-            //               select article;
-            // Solutia: Eager loading
             var articles = db.Articles.Include("Category").Include("User");
             if (TempData.ContainsKey("message"))
             {
@@ -127,8 +124,15 @@ namespace DAWProiect.Controllers
             Article article = db.Articles.Find(id);
             ViewBag.Article = article;
             article.Categories = GetAllCategories();
-
-            return View(article);
+            if (article.UserId == User.Identity.GetUserId() || User.IsInRole("Administrator"))
+            {
+                return View(article);
+            }
+            else
+            {
+                TempData["message"] = "Nu aveti dreptul sa faceti modificari asupra unui articol care nu va apartine!";
+                return RedirectToAction("Index");
+            }
         }
 
         [HttpPut]
@@ -155,26 +159,16 @@ namespace DAWProiect.Controllers
             }
             try
             {
-               
-                //if (ModelState.IsValid)
-                //{
-
-                    //if (TryUpdateModel(article))
-                    //{
-                        article.Title = requestArticle.Title;
-                        article.Content = requestArticle.Content;
-                        article.Date = requestArticle.Date;
-                        article.CategoryId = requestArticle.CategoryId;
-                        db.SaveChanges();
-                        TempData["message"] = "Articolul a fost modificat!";
-                    //}
+                if (article.UserId == User.Identity.GetUserId() || User.IsInRole("Administrator"))
+                {
+                    article.Title = requestArticle.Title;
+                    article.Content = requestArticle.Content;
+                    article.Date = requestArticle.Date;
+                    article.CategoryId = requestArticle.CategoryId;
+                    db.SaveChanges();
+                    TempData["message"] = "Articolul a fost modificat!";
+                }
                     return RedirectToAction("Index");
-                //}
-                //else
-                //{
-                //    return View();
-                //}
-
             }
             catch (Exception e)
             {

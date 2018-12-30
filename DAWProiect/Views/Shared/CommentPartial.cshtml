@@ -1,0 +1,15 @@
+﻿@model DAWProiect.Models.Comment
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <div class="addcommentbox">
+        <h2> Add Comment </h2>
+        @Html.TextAreaFor(model => model.Content)
+        <div class="ErrorMessage">
+            @Html.ValidationMessageFor(model => model.Content)
+        </div>
+        <input id="addComment" type="button" onclick="" value="Add" />
+    </div>
+}
+
