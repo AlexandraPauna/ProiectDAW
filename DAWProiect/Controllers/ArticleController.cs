@@ -33,9 +33,33 @@ namespace DAWProiect.Controllers
             Article article = db.Articles.Find(id);
             ViewBag.Article = article;
             ViewBag.Category = article.Category;
-
+            var comments = from comment in db.Comments
+                           where comment.ArticleId == article.Id
+                           select comment;
+            ViewBag.Comments = comments;
             return View(article);
 
+        }
+
+        [HttpPost]
+        public ActionResult AddCom(Comment comment)
+        {
+            if(String.IsNullOrEmpty(comment.Content))
+            {
+                return Redirect("Show/" + comment.ArticleId.ToString());
+            }
+            else
+            {
+                var userId = User.Identity.GetUserId();
+                if (userId == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+                else comment.UserId = userId;
+                db.Comments.Add(comment);
+                db.SaveChanges();
+                return Redirect("Show/" + comment.ArticleId.ToString());
+            }
         }
 
         [Authorize(Roles = "Editor,Administrator")]

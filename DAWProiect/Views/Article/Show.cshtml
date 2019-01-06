@@ -23,7 +23,26 @@
 <a class="btn btn-sm btn-success" href="/Article/Index">Inapoi la articole</a> <a class="btn btn-sm btn-success" href="/Article/New">Adauga articol</a>
 
 <br />
-@*@Html.Partial("CommentPartial")
+<br />
+<h2>Comentarii</h2>
+<hr />
+<br />
+<br />
 
-@{Html.RenderAction("Create", "Comment", new { articleID = Model.Id });}*@
+@foreach (var com in ViewBag.Comments)
+{
+    <p style="color:blue;">@com.User.UserName</p>
+    <p>@com.Content</p>
+    <hr />
+}
+
+
+<form method="post" action="/Article/AddCom">
+    <input type="hidden" name="ArticleId" value="@Model.Id" />
+    <label>Comentariu:</label>
+    <br />
+    <input type="text" name="Content" />
+    <button class="btn btn-sm btn-success" type="submit">Adauga comentariu</button>
+</form>
+
 
