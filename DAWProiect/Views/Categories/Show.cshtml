@@ -20,15 +20,23 @@
         <button class="btn btn-sm btn-danger" type="submit">Sterge categoria</button>
     </form>
 }
-  
-<label>Sorteaza dupa data </label>
-<input type="checkbox" class="onoffswitch-checkbox" id="sortRecent">
+
+@*<label>Sorteaza dupa data </label>
+@Html.CheckBox("sortByDate", false, new { id = "checkboxDate", onclick = "Sort(this)" })
 
 <br />
 <br />
 
 <label>Sorteaza alfabetic </label>
-<input type="checkbox" class="onoffswitch-checkbox" id="sortAbc">
+@Html.CheckBox("sortByName", false, new { id = "checkboxName", onclick = "Sort(this)" })*@
+
+<form  method="POST">
+    <select id="sortType" name="sortType">
+        <option value="Title">Titlu</option>
+        <option value="Date">Data</option>
+    </select>
+    <input type="submit" value="Sorteaza" />
+</form>
 
 @foreach (DAWProiect.Models.Article article in ViewBag.Articles)
 {
@@ -41,3 +49,14 @@
 <br /><br />
 <a class="btn btn-sm btn-success" href="/Categories/Index">Inapoi la categorii</a>
 <br />
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#checkboxDate').change(function () {
+            var isChecked = $(this).is(':checked');
+           
+        });
+    });
+</script>

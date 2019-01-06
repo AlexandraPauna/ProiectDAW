@@ -190,7 +190,7 @@ namespace DAWProiect.Controllers
                     article.Date = requestArticle.Date;
                     article.CategoryId = requestArticle.CategoryId;
                     db.SaveChanges();
-                    TempData["message"] = "Articolul a fost modificat!";
+                    TempData["message"] = "Stirea a fost modificata!";
                 }
                     return RedirectToAction("Index");
             }
