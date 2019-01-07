@@ -14,7 +14,7 @@ namespace DAWProiect.Controllers
         public ActionResult Create(int articleID)
         {
             var newComment = new Comment();
-            newComment.ArticleId = articleID; // this will be sent from the ArticleDetails View, hold on :).
+            newComment.ArticleId = articleID;
 
             return View(newComment);
         }

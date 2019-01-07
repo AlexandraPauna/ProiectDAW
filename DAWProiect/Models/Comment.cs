@@ -10,10 +10,19 @@ namespace DAWProiect.Models
     {
         [Key]
         public int Id { get; set; }
+
+        [Required]
         public string UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
+
+        [Required]
         [Display(Name = "Comentariu")]
         public string Content { get; set; }
+
+        [Required]
+        public DateTime Date { get; set; }
+
+        [Required]
         public int ArticleId { get; set; }
         public virtual Article Article{ get; set; }
     }
