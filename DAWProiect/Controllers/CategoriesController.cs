@@ -33,7 +33,6 @@ namespace DAWProiect.Controllers
         public ActionResult Show(int id)
         {
             Category category = db.Categories.Find(id);
-            //ViewBag.Category = category;
             ViewBag.CategoryId = category.CategoryId;
             ViewBag.CategoryName = category.CategoryName;
             var userId = User.Identity.GetUserId();
@@ -46,8 +45,7 @@ namespace DAWProiect.Controllers
                 ViewBag.message = TempData["message"].ToString();
             }
             ViewBag.Articles = articles;
-            //return View(category);
-            //return View(articles);
+            
             return View();
         }
 
