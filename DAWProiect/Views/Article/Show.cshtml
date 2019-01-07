@@ -38,7 +38,7 @@
             <button class="btn btn-sm btn-danger" type="submit">Sterge comentariu</button>
         </form>*@
     <p style="color:blue;">@com.User.UserName</p>
-    if (ViewBag.loggedInUser == com.UserId)
+    if (ViewBag.loggedInUser == com.UserId || ViewBag.loggedInUser == com.Article.UserId)
     {
         <form method="post" action="/Article/EditComm/@com.Id">
             <input type="text" name="Content" value="@com.Content" />

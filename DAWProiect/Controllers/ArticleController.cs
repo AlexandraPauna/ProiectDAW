@@ -40,7 +40,7 @@ namespace DAWProiect.Controllers
             ViewBag.Article = article;
             ViewBag.Category = article.Category;
 
-            var comments = db.Comments.Include("User").Where(x => x.ArticleId == article.Id).OrderByDescending(x => x.Date);
+            var comments = db.Comments.Include("User").Include("Article").Where(x => x.ArticleId == article.Id).OrderByDescending(x => x.Date);
             ViewBag.Comments = comments;
 
             var userId = User.Identity.GetUserId();
@@ -97,7 +97,7 @@ namespace DAWProiect.Controllers
         public ActionResult EditComm(int id, Comment requestComm)
         {
             Comment comm = db.Comments.Find(id);
-            if (comm.UserId == User.Identity.GetUserId() || User.IsInRole("Administrator"))
+            if (comm.UserId == User.Identity.GetUserId() || User.IsInRole("Administrator") || User.Identity.GetUserId() == comm.Article.UserId)
             {
                 comm.Content = requestComm.Content;
                 db.SaveChanges();
