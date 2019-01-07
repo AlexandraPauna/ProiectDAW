@@ -32,7 +32,7 @@
     <br />
 
     <div class="form-group">
-        @Html.Label("Content", "Continut Articol",  new { @class = "col-md-2 control-label" })
+        @Html.Label("Content", "Continut Stire",  new { @class = "col-md-2 control-label" })
         <br />
         @Html.EditorFor(m => m.Content)
         @Html.ValidationMessageFor(model => model.Content, "Continutul este obligatoriu", new { @class = "text-danger " })

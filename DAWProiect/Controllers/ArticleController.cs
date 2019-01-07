@@ -30,12 +30,17 @@ namespace DAWProiect.Controllers
 
         public ActionResult Show(int id)
         {
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.message = TempData["message"].ToString();
+            }
+
             Article article = db.Articles.Find(id);
+            
             ViewBag.Article = article;
             ViewBag.Category = article.Category;
-            var comments = from comment in db.Comments
-                           where comment.ArticleId == article.Id
-                           select comment;
+
+            var comments = db.Comments.Include("User").Where(x => x.ArticleId == article.Id).OrderByDescending(x => x.Date);
             ViewBag.Comments = comments;
             return View(article);
 
@@ -56,9 +61,31 @@ namespace DAWProiect.Controllers
                     return RedirectToAction("Login", "Account");
                 }
                 else comment.UserId = userId;
+                comment.Date = DateTime.Now;
+
                 db.Comments.Add(comment);
                 db.SaveChanges();
                 return Redirect("Show/" + comment.ArticleId.ToString());
+            }
+        }
+
+    
+        [HttpDelete]
+        public ActionResult DeleteComm(int id)
+        {
+
+            Comment comm = db.Comments.Find(id);
+            if (comm.UserId == User.Identity.GetUserId() || User.IsInRole("Administrator"))
+            {
+                db.Comments.Remove(comm);
+                db.SaveChanges();
+                TempData["message"] = "Comentariul a fost stars!";
+                return RedirectToAction("Show/" + comm.ArticleId.ToString());
+            }
+            else
+            {
+                TempData["message"] = "Nu aveti dreptul sa stergeti un comentariu care nu va apartine!";
+                return RedirectToAction("Show/" + comm.ArticleId.ToString());
             }
         }
 
@@ -154,7 +181,7 @@ namespace DAWProiect.Controllers
             }
             else
             {
-                TempData["message"] = "Nu aveti dreptul sa faceti modificari asupra unui articol care nu va apartine!";
+                TempData["message"] = "Nu aveti dreptul sa faceti modificari asupra unei stiri care nu va apartine!";
                 return RedirectToAction("Index");
             }
         }
@@ -208,7 +235,7 @@ namespace DAWProiect.Controllers
             Article article = db.Articles.Find(id);
             db.Articles.Remove(article);
             db.SaveChanges();
-            TempData["message"] = "Articolul a fost sters!";
+            TempData["message"] = "Stirea a fost stearsa!";
             return RedirectToAction("Index");
         }
 

@@ -12,7 +12,7 @@
 
 
 <a class="btn btn-sm btn-info" href="/Article/Edit/@Model.Id">
-    Modifica articol
+    Modifica stire
 </a>
 <br />
 <form method="post" action="/Article/Delete/@Model.Id">
@@ -33,6 +33,13 @@
 {
     <p style="color:blue;">@com.User.UserName</p>
     <p>@com.Content</p>
+    <p style="color:limegreen;">@com.Date</p>
+    
+    <form method="post" action="/Article/DeleteComm/@com.Id">
+        @Html.HttpMethodOverride(HttpVerbs.Delete)
+        <button class="btn btn-sm btn-danger" type="submit">Sterge comentariu</button>
+    </form>
+
     <hr />
 }
 
