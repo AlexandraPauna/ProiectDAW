@@ -42,6 +42,10 @@ namespace DAWProiect.Controllers
 
             var comments = db.Comments.Include("User").Where(x => x.ArticleId == article.Id).OrderByDescending(x => x.Date);
             ViewBag.Comments = comments;
+
+            var userId = User.Identity.GetUserId();
+            ViewBag.loggedInUser = userId;
+
             return View(article);
 
         }
@@ -75,7 +79,7 @@ namespace DAWProiect.Controllers
         {
 
             Comment comm = db.Comments.Find(id);
-            if (comm.UserId == User.Identity.GetUserId() || User.IsInRole("Administrator"))
+            if (comm.UserId == User.Identity.GetUserId() || User.IsInRole("Administrator") || User.Identity.GetUserId() == comm.Article.UserId)
             {
                 db.Comments.Remove(comm);
                 db.SaveChanges();
@@ -87,6 +91,21 @@ namespace DAWProiect.Controllers
                 TempData["message"] = "Nu aveti dreptul sa stergeti un comentariu care nu va apartine!";
                 return RedirectToAction("Show/" + comm.ArticleId.ToString());
             }
+        }
+
+        [HttpPost]
+        public ActionResult EditComm(int id, Comment requestComm)
+        {
+            Comment comm = db.Comments.Find(id);
+            if (comm.UserId == User.Identity.GetUserId() || User.IsInRole("Administrator"))
+            {
+                comm.Content = requestComm.Content;
+                db.SaveChanges();
+                TempData["message"] = "Comentariul a fost modificat!";
+                return RedirectToAction("Show/" + comm.ArticleId.ToString());
+            }
+            else
+                return RedirectToAction("Show/" + comm.ArticleId.ToString());
         }
 
         [Authorize(Roles = "Editor,Administrator")]
