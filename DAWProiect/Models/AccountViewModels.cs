@@ -55,10 +55,10 @@ namespace DAWProiect.Models
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Parola")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "Tine-ma minte")]
         public bool RememberMe { get; set; }
     }
 

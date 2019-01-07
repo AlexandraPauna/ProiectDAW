@@ -204,11 +204,13 @@ namespace DAWProiect.Controllers
         [Authorize(Roles = "Editor,Administrator")]
         public ActionResult Delete(int id)
         {
-
             Article article = db.Articles.Find(id);
-            db.Articles.Remove(article);
-            db.SaveChanges();
-            TempData["message"] = "Articolul a fost sters!";
+            if (article.UserId == User.Identity.GetUserId() || User.IsInRole("Administrator"))
+            {
+                db.Articles.Remove(article);
+                db.SaveChanges();
+                TempData["message"] = "Articolul a fost sters!";
+            }
             return RedirectToAction("Index");
         }
 
