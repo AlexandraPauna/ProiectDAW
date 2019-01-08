@@ -11,7 +11,7 @@ namespace DAWProiect.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        public ActionResult Index()
+        public ActionResult Index(string searchTitle)
         {
             var articles = db.Articles.Include("Category").Include("User").OrderByDescending(a => a.Date);
             if (TempData.ContainsKey("message"))
@@ -19,9 +19,15 @@ namespace DAWProiect.Controllers
                 ViewBag.message = TempData["message"].ToString();
             }
             ViewBag.Articles = articles;
-            
+
+            if (!String.IsNullOrEmpty(searchTitle))
+            {
+                ViewBag.Articles = articles.Where(s => s.Title.Contains(searchTitle));
+            }
+
             return View();
         }
+
 
         public ActionResult About()
         {

@@ -7,6 +7,14 @@
     <p class="lead">Fii in pas cu ultimele noutati !</p>
 </div>
 
+@using (Html.BeginForm("Index", "Home", FormMethod.Get))
+{
+    <b>Cauta stire:</b>
+    @Html.TextBox("SearchTitle");<input class="btn btn-primary" class="form-control input-sm pull-right" type="submit" value="Aplica" />
+    <br/>
+    <br/>
+}
+
 @foreach (DAWProiect.Models.Article article in ViewBag.Articles)
 {
     @Html.Partial("ArticleInfo", article);
